@@ -19,7 +19,6 @@ A lightweight HLS (HTTP Live Streaming) server that streams video files using FF
 
 ✅ FFmpeg bundled inside
 ✅ GPU acceleration (NVIDIA/AMD/Intel)
-✅ System tray interface
 ✅ Auto-opens web player
 
 1. Download `hls-streamer-gui-windows.exe` from releases
