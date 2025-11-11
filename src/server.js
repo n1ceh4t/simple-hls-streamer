@@ -27,6 +27,62 @@ function createServer() {
   });
 
   // ============================================================================
+  // IP Whitelist Middleware
+  // ============================================================================
+
+  /**
+   * Check if an IP address is a local/private address
+   * @param {string} ip - IP address to check
+   * @returns {boolean} true if the IP is local
+   */
+  function isLocalIP(ip) {
+    // Handle IPv4-mapped IPv6 addresses (::ffff:192.168.1.1)
+    if (ip.startsWith('::ffff:')) {
+      ip = ip.substring(7);
+    }
+
+    // IPv6 localhost and link-local
+    if (ip === '::1' || ip.startsWith('fe80:')) {
+      return true;
+    }
+
+    // IPv4 localhost
+    if (ip === '127.0.0.1' || ip.startsWith('127.')) {
+      return true;
+    }
+
+    // Private IPv4 ranges
+    const parts = ip.split('.').map(Number);
+    if (parts.length === 4) {
+      // 10.0.0.0/8
+      if (parts[0] === 10) return true;
+      // 172.16.0.0/12
+      if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true;
+      // 192.168.0.0/16
+      if (parts[0] === 192 && parts[1] === 168) return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Middleware to restrict API access to local IP addresses only
+   */
+  function localIPOnly(req, res, next) {
+    const clientIP = req.ip || req.connection.remoteAddress || req.socket.remoteAddress;
+
+    if (isLocalIP(clientIP)) {
+      next();
+    } else {
+      console.warn(`[Security] API access denied for external IP: ${clientIP}`);
+      res.status(403).json({
+        error: 'Forbidden',
+        message: 'API access is restricted to local network only'
+      });
+    }
+  }
+
+  // ============================================================================
   // API Routes
   // ============================================================================
 
@@ -34,7 +90,7 @@ function createServer() {
    * GET /
    * Health check
    */
-  app.get('/', async (req, res) => {
+  app.get('/', localIPOnly, async (req, res) => {
     // Detect GPU on first request (lazy init)
     if (!ffmpeg.gpuInfo) {
       await ffmpeg.detectGPU();
@@ -56,7 +112,7 @@ function createServer() {
    * GET /api/gpu
    * Get GPU and hardware acceleration info
    */
-  app.get('/api/gpu', async (req, res) => {
+  app.get('/api/gpu', localIPOnly, async (req, res) => {
     const gpuInfo = await ffmpeg.detectGPU();
     res.json({
       gpu: gpuInfo,
@@ -71,7 +127,7 @@ function createServer() {
    * POST /api/stream/start
    * Start a new HLS stream
    */
-  app.post('/api/stream/start', async (req, res) => {
+  app.post('/api/stream/start', localIPOnly, async (req, res) => {
     try {
       const { streamId, files, options } = req.body;
 
@@ -117,7 +173,7 @@ function createServer() {
    * POST /api/stream/stop
    * Stop an active stream
    */
-  app.post('/api/stream/stop', async (req, res) => {
+  app.post('/api/stream/stop', localIPOnly, async (req, res) => {
     try {
       const { streamId } = req.body;
 
@@ -147,7 +203,7 @@ function createServer() {
    * GET /api/streams
    * List all active streams
    */
-  app.get('/api/streams', (req, res) => {
+  app.get('/api/streams', localIPOnly, (req, res) => {
     const streams = ffmpeg.getActiveStreams();
     res.json({
       count: streams.length,
@@ -159,7 +215,7 @@ function createServer() {
    * POST /api/playlist/create
    * Create a concat file from file list
    */
-  app.post('/api/playlist/create', async (req, res) => {
+  app.post('/api/playlist/create', localIPOnly, async (req, res) => {
     try {
       const { playlistId, files } = req.body;
 
@@ -189,7 +245,7 @@ function createServer() {
    * GET /api/playlists
    * List all concat files
    */
-  app.get('/api/playlists', async (req, res) => {
+  app.get('/api/playlists', localIPOnly, async (req, res) => {
     try {
       const concatFiles = await playlist.listConcatFiles();
       res.json({
