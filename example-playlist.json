@@ -1,0 +1,14 @@
+{
+  "name": "Example Playlist",
+  "description": "Sample playlist showing how to structure file lists",
+  "files": [
+    "/absolute/path/to/video1.mp4",
+    "/absolute/path/to/video2.mkv",
+    "/absolute/path/to/video3.mp4"
+  ],
+  "notes": [
+    "All file paths must be absolute",
+    "Files will play in the order listed",
+    "Supported formats: mp4, mkv, avi, mov, etc. (anything FFmpeg supports)"
+  ]
+}

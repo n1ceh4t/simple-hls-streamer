@@ -1,0 +1,65 @@
+{
+  "name": "simple-hls-streamer",
+  "version": "1.0.0",
+  "description": "Simple HLS streaming server with concat file support",
+  "main": "src/index.js",
+  "bin": {
+    "hls-streamer": "src/index.js",
+    "hls-streamer-gui": "src/gui-index.js"
+  },
+  "scripts": {
+    "start": "node src/simple-gui-index.js",
+    "start:cli": "node src/index.js",
+    "start:gui": "node src/gui-index.js",
+    "dev": "nodemon src/simple-gui-index.js",
+    "install:safe": "npm install --no-bin-links",
+    "download-ffmpeg": "node scripts/download-ffmpeg.js",
+    "download-ffmpeg:windows": "node scripts/download-ffmpeg.js windows",
+    "download-ffmpeg:linux": "node scripts/download-ffmpeg.js linux",
+    "download-ffmpeg:macos": "node scripts/download-ffmpeg.js darwin",
+    "prebuild": "npm run download-ffmpeg",
+    "build": "npm run build:windows",
+    "build:windows": "npm run download-ffmpeg:windows && node node_modules/pkg/lib-es5/bin.js src/simple-gui-index.js --targets node18-win-x64 --output dist/hls-streamer-windows.exe --config package.json",
+    "build:windows:cli": "npm run download-ffmpeg:windows && node node_modules/pkg/lib-es5/bin.js src/index.js --targets node18-win-x64 --output dist/hls-streamer-cli-windows.exe --config package.json",
+    "build:windows:systray": "npm run download-ffmpeg:windows && node node_modules/pkg/lib-es5/bin.js src/gui-index.js --targets node18-win-x64 --output dist/hls-streamer-systray-windows.exe --config package.json",
+    "build:linux": "npm run download-ffmpeg:linux && node node_modules/pkg/lib-es5/bin.js src/simple-gui-index.js --targets node18-linux-x64 --output dist/hls-streamer-linux",
+    "build:macos": "npm run download-ffmpeg:macos && node node_modules/pkg/lib-es5/bin.js src/simple-gui-index.js --targets node18-macos-x64 --output dist/hls-streamer-macos",
+    "build:all": "npm run build:windows && npm run build:linux && npm run build:macos"
+  },
+  "pkg": {
+    "assets": [
+      "player.html",
+      "src/**/*.js",
+      "node_modules/systray2/**/*",
+      "node_modules/axios/**/*",
+      "bin/**/*"
+    ],
+    "scripts": [
+      "src/**/*.js",
+      "node_modules/axios/**/*.js"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  },
+  "keywords": [
+    "hls",
+    "streaming",
+    "ffmpeg",
+    "m3u8"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "open": "^8.4.0",
+    "systray2": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "pkg": "^5.8.1"
+  }
+}
