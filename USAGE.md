@@ -321,10 +321,7 @@ Use numbers at the start for guaranteed alphabetical sorting!
 
 ## Security Notes
 
-- The server only binds to `localhost` (127.0.0.1) by default
-- Only accessible from your computer
 - No external access without port forwarding
-- No filesystem traversal in API endpoints
 - Only scans the current working directory
 
 ---
