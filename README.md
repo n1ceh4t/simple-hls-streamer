@@ -303,4 +303,6 @@ npm run dev
 
 ## License
 
-MIT
+GNU General Public License v2.0 or later
+
+This project uses FFmpeg with GPL components enabled, which requires the entire application to be licensed under GPL. See LICENSE file for details.

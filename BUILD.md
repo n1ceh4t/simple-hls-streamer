@@ -7,11 +7,7 @@ This guide explains how to build standalone executables for Windows and other pl
 If you just want to **use** the pre-built Windows executable:
 
 1. Download `hls-streamer-gui-windows.exe` from the releases page
-2. Install FFmpeg:
-   - **Easy way**: `choco install ffmpeg` (requires Chocolatey)
-   - **Manual way**: Download from https://www.gyan.dev/ffmpeg/builds/ and add to PATH
-3. Double-click `hls-streamer-gui-windows.exe`
-4. Right-click the system tray icon to start the server!
+2. Right-click `hls-streamer-gui-windows.exe` and run as administrator
 
 That's it! No Node.js installation required.
 
@@ -384,6 +380,6 @@ To reduce size:
 
 ## License
 
-MIT License - See LICENSE file for details.
+GNU General Public License v2.0 or later - See LICENSE file for details.
 
-FFmpeg is licensed under LGPL/GPL - ensure compliance when distributing.
+This project uses FFmpeg with GPL components enabled, which requires the entire application to be licensed under GPL. When distributing this software, you must provide the complete source code for both this application and FFmpeg, in compliance with GPL requirements.

@@ -381,9 +381,9 @@ npm run build:windows
 
 ## License
 
-MIT License - Free to use, modify, and distribute.
+GNU General Public License v2.0 or later - Free to use, modify, and distribute.
 
-FFmpeg is licensed under LGPL/GPL. This project uses FFmpeg as a bundled binary (no modifications), complying with LGPL requirements.
+This project uses FFmpeg with GPL components enabled, which requires the entire application to be licensed under GPL. When distributing this software, you must provide the complete source code for both this application and FFmpeg, in compliance with GPL requirements.
 
 ---
 
