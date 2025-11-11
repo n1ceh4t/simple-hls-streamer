@@ -10,11 +10,10 @@ A lightweight HLS (HTTP Live Streaming) server that streams video files using FF
 - Real-time HLS segment serving
 - Multiple concurrent streams support
 - Graceful shutdown handling
-- **NEW**: Windows GUI with system tray icon (no command line needed!)
 
 ## Installation Options
 
-### Option 1: Windows GUI (Easiest for Windows Users) 🌟
+### Option 1: Windows
 
 **100% standalone - no installation needed!**
 
@@ -24,10 +23,7 @@ A lightweight HLS (HTTP Live Streaming) server that streams video files using FF
 ✅ Auto-opens web player
 
 1. Download `hls-streamer-gui-windows.exe` from releases
-2. Double-click and start streaming!
-
-See **[WINDOWS-GUI.md](WINDOWS-GUI.md)** for detailed instructions.
-See **[GPU-SUPPORT.md](GPU-SUPPORT.md)** for GPU acceleration info.
+2. Right-Click and run as administrator
 
 ### Option 2: From Source (All Platforms)
 
